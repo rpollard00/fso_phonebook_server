@@ -41,17 +41,59 @@ app.get ('/api/persons/:id', (request, response) => {
   person ? response.json(person) : response.status(404).end()
 })
 
-app.get ('/info', (request, response) => {
-  response.send(`
-    <p>Phonebook has info for ${persons.length} people</p>
-    <p>${new Date()}</p>
-  `)
+const generateRandomId = () => {
+  return Math.floor(Math.random() * 1000000)
+}
+
+app.post ('/api/persons', (request, response) => {
+  const body = request.body
+  // generate a random id
+  // create a person object
+  const person = {
+    id: generateRandomId(),
+    name: body.name,
+    phone: body.phone
+  }
+
+  if (!body.name) {
+    return response.status(400).json({
+      'error': 'missing name'
+    })
+  } else if (!body.phone) {
+    return response.status(400).json({
+      'error': 'missing phone number'
+    })
+  }
+
+  if (persons.find(p => p.name.toLowerCase() === body.name.toLowerCase())) {
+    return response.status(409).json({ 
+      'error': `Name ${body.name} already exists`
+    })
+  } else if (persons.find(p => Number(p.id) === person.id)) {
+    return response.status(409).json({
+      'error': `duplicate id generated`
+    })
+  }
+
+  persons = persons.concat(person)
+  response.status(200).end()
+  // add the person to the array
+
+  // fail if the name is duplicate or id is duplicate
+
 })
 
 app.delete ('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   persons = persons.filter(person => person.id !== id)
   response.status(204).end()
+})
+
+app.get ('/info', (request, response) => {
+  response.send(`
+    <p>Phonebook has info for ${persons.length} people</p>
+    <p>${new Date()}</p>
+  `)
 })
 
 const PORT = 3001;
