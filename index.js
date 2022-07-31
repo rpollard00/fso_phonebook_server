@@ -34,11 +34,24 @@ app.get ('/api/persons', (request, response) => {
   response.json(persons)
 })
 
+app.get ('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  const person = persons.find(person => id === person.id)
+
+  person ? response.json(person) : response.status(404).end()
+})
+
 app.get ('/info', (request, response) => {
   response.send(`
     <p>Phonebook has info for ${persons.length} people</p>
     <p>${new Date()}</p>
   `)
+})
+
+app.delete ('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  persons = persons.filter(person => person.id !== id)
+  response.status(204).end()
 })
 
 const PORT = 3001;
