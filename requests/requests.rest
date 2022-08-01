@@ -11,6 +11,19 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
- "name": "Julio Rodriguez",
- "phone": "21090191"
+ "name": "Carnation Trailer",
+ "phone": "21d090191"
+}
+
+###
+GET https://radiant-lowlands-19483.herokuapp.com/api/persons
+
+###
+
+POST https://radiant-lowlands-19483.herokuapp.com/api/persons
+Content-Type: application/json
+
+{
+ "name": "Carnation Trailer",
+ "phone": "21d090191"
 }
