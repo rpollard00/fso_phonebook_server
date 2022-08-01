@@ -1,11 +1,14 @@
 const express = require('express')
 const morgan = require('morgan')
+const cors = require('cors')
 const app = express()
 
 morgan.token('person', (req, res) => JSON.stringify(req.body) )
 
 app.use(morgan(':method :url :status :res[content-length] :response-time ms :person'))
 app.use(express.json())
+app.use(cors())
+app.use(express.static('build'))
 
 
 let persons = [
@@ -82,7 +85,7 @@ app.post ('/api/persons', (request, response) => {
 
   persons = persons.concat(person)
   //res.send(`${person}`)
-  response.status(200).end()
+  response.status(200).json(person)
   // add the person to the array
 
   // fail if the name is duplicate or id is duplicate
@@ -102,6 +105,6 @@ app.get ('/info', (request, response) => {
   `)
 })
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT);
 console.log(`Server running on port ${PORT}`);
