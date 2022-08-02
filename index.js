@@ -26,11 +26,16 @@ app.get("/api/persons", (request, response) => {
     .catch((error) => next(error));
 });
 
-app.get("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id);
-  const person = persons.find((person) => id === person.id);
-
-  person ? response.json(person) : response.status(404).end();
+app.get("/api/persons/:id", (request, response, next) => {
+  Person.findById(request.params.id)
+    .then((person) => {
+      if (person) {
+        response.json(person);
+      } else {
+        response.status(404).end();
+      }
+    })
+    .catch((error) => next(error));
 });
 
 // const generateRandomId = () => {
@@ -76,45 +81,6 @@ app.put("/api/persons/:id", (request, response, next) => {
     .catch((error) => next(error));
 });
 
-// app.post ('/api/persons', (request, response) => {
-//   const body = request.body
-//   // generate a random id
-//   // create a person object
-//   const person = {
-//     id: generateRandomId(),
-//     name: body.name,
-//     phone: body.phone
-//   }
-
-//   if (!body.name) {
-//     return response.status(400).json({
-//       'error': 'missing name'
-//     })
-//   } else if (!body.phone) {
-//     return response.status(400).json({
-//       'error': 'missing phone number'
-//     })
-//   }
-
-//   if (persons.find(p => p.name.toLowerCase() === body.name.toLowerCase())) {
-//     return response.status(409).json({
-//       'error': `Name ${body.name} already exists`
-//     })
-//   } else if (persons.find(p => Number(p.id) === person.id)) {
-//     return response.status(409).json({
-//       'error': `duplicate id generated`
-//     })
-//   }
-
-//   persons = persons.concat(person)
-//   //res.send(`${person}`)
-//   response.status(200).json(person)
-//   // add the person to the array
-
-//   // fail if the name is duplicate or id is duplicate
-
-// })
-
 app.delete("/api/persons/:id", (request, response) => {
   Person.findByIdAndRemove(request.params.id)
     .then((result) => {
@@ -124,10 +90,14 @@ app.delete("/api/persons/:id", (request, response) => {
 });
 
 app.get("/info", (request, response) => {
-  response.send(`
-    <p>Phonebook has info for ${persons.length} people</p>
-    <p>${new Date()}</p>
-  `);
+  Person.find({})
+    .then((persons) => {
+      response.send(`
+      <p>Phonebook has info for ${persons.length} people</p>
+      <p>${new Date()}</p>
+    `);
+    })
+    .catch((error) => next(error));
 });
 
 // last middleware
