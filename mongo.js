@@ -31,7 +31,7 @@ else {
     const name = process.argv[3]
     const phone = process.argv[4]
 
-    console.log('connected')
+  console.log('connected')
   const person = new Person({
     name: name,
     phone: phone,
