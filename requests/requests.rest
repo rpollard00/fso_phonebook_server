@@ -2,7 +2,11 @@ GET http://localhost:3001/api/persons
 
 ###
 
-DELETE http://localhost:3001/api/persons/2
+GET http://localhost:3001/api/persons/62e8906c6ab37230f3524220
+
+###
+
+DELETE http://localhost:3001/api/persons/62e8a247b08343c1fcb0882a
 
 
 ###
@@ -11,7 +15,7 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
- "name": "Carnation Trailer",
+ "name": "DDDDDCarnDDADWAAAAAAation AAAAATrailer",
  "phone": "21d090191"
 }
 
@@ -27,3 +31,16 @@ Content-Type: application/json
  "name": "Carnation Trailer",
  "phone": "21d090191"
 }
+
+###
+
+PUT http://localhost:3001/api/persons/62e8907d4b453dfcc047430c
+Content-Type: application/json
+
+{
+  "name": "Geno Suarez",
+  "phone": "211-411-9111"
+}
+
+###
+GET http://localhost:3001/api/persons/62e8907d4b453dfcc047430c
