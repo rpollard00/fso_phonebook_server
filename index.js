@@ -5,7 +5,7 @@ const Person = require("./models/person");
 const cors = require("cors");
 const app = express();
 
-morgan.token("person", (req, res) => JSON.stringify(req.body));
+morgan.token("person", (request, response) => JSON.stringify(request.body));
 
 app.use(
   morgan(":method :url :status :res[content-length] :response-time ms :person")
@@ -37,10 +37,6 @@ app.get("/api/persons/:id", (request, response, next) => {
     })
     .catch((error) => next(error));
 });
-
-// const generateRandomId = () => {
-//   return Math.floor(Math.random() * 1000000)
-// }
 
 app.post("/api/persons", (request, response, next) => {
   const body = request.body;
